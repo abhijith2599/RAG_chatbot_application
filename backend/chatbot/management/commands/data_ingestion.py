@@ -46,8 +46,8 @@ class Command(BaseCommand):
         # 2. Splitting Documents
 
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size = 300,
-            chunk_overlap = 180,
+            chunk_size = 500,
+            chunk_overlap = 120,
             length_function = len,  # Function to compute the length of the text
             separators=["\n\n", "\n", ".", " "]
         )
