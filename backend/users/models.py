@@ -5,9 +5,13 @@ from django.contrib.auth.models import User
 class UserDocument(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
     file = models.FileField(upload_to="user_documents/")
+
     original_filename = models.CharField(max_length=255)
+
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    
     ingestion_status = models.CharField(
         max_length=20,
         choices=[('PENDING', 'Pending'), ('PROCESSING', 'Processing'), ('SUCCESS', 'Success'), ('FAILURE', 'Failure')],

@@ -3,8 +3,11 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class ChatSession(models.Model):
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
     title = models.CharField(max_length=255, default="New Chat")
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -12,9 +15,13 @@ class ChatSession(models.Model):
 
 
 class ChatMessage(models.Model):
+
     session = models.ForeignKey(ChatSession, on_delete=models.CASCADE, related_name="messages")
+
     message = models.TextField()
+
     is_from_ai = models.BooleanField(default=False)
+
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
