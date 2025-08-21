@@ -2,7 +2,7 @@
 
 from django.contrib.auth.models import User
 from .serializers import *
-
+from .models import UserDocument
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework import status
@@ -46,5 +46,19 @@ class UserDocumentUploadView(generics.CreateAPIView):
         )
         process_document_ingestion.delay(instance.id)
 
-        # redis-server.exe  -- use commadn to first run redis
-        # celery -A core worker -l info -P solo  --- then this command, then runserver
+
+class UserDocumentListView(generics.ListAPIView):
+    """
+    API endpoint for listing documents for a logged-in user.
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserDocumentSerializer
+
+    def get_queryset(self):
+        # Only return documents belonging to the currently authenticated user
+        return UserDocument.objects.filter(user=self.request.user).order_by('-uploaded_at')
+
+
+
+# redis-server.exe  -- use commadn to first run redis
+# celery -A core worker -l info -P solo  --- then this command, then runserver
